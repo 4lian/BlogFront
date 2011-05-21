@@ -1,0 +1,18 @@
+[submodule "vendor/frontLib"]
+	path = vendor/frontLib
+	url = https://github.com/sorcerers/frontLib.git
+[submodule "vendor/gh3"]
+	path = vendor/gh3
+	url = https://github.com/bolasblack/gh3.git
+[submodule "vendor/js-yaml"]
+	path = vendor/js-yaml
+	url = https://github.com/nodeca/js-yaml.git
+[submodule "vendor/marked"]
+	path = vendor/marked
+	url = https://github.com/chjj/marked.git
+[submodule "vendor/underscore"]
+	path = vendor/underscore
+	url = https://github.com/documentcloud/underscore.git
+[submodule "vendor/underscore-waterfall"]
+	path = vendor/underscore-waterfall
+	url = https://github.com/bolasblack/underscore-waterfall.git
