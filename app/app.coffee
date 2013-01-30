@@ -24,7 +24,4 @@ App.config([
 
   # Without server side support html5 must be disabled.
   $locationProvider.html5Mode(false).hashPrefix("!")
-
-  #$.ajaxSetup
-    #beforeSend: (jqXHR, setting) ->
 ])

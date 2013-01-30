@@ -1,6 +1,10 @@
 <div>
   <h2>{{pageTitle}}</h2>
   <ul data-ng-controller="PostListCtrl">
-    <li data-ng-repeat="post in posts">{{post.name}}</li>
+    <li data-ng-repeat="post in posts">
+      <time>{{post.metaData.create_at}}</time>
+      @
+      {{post.metaData.title}}
+    </li>
   </ul>
 </div>
