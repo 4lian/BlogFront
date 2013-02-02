@@ -4,16 +4,68 @@
 
 angular.module('app.services', ['ngResource'])
 
-.factory('version', -> "0.1")
+.factory('Deferred', -> # [[[
+  -> $.Deferred()
+) # ]]]
 
-.factory('Deferred', -> -> $.Deferred())
-.factory('DeferredQueue', ->
+.factory('DeferredQueue', -> # [[[
   (deferreds...) ->
     deferreds = deferreds[0] if _(deferreds[0]).isArray()
     $.when.apply $, deferreds
-)
+) # ]]]
 
-.factory("ghrepo", [
+.factory("Gh3.File", -> # [[[
+  parsePostData = (post) ->
+    rawContent = Gh3.File::getRawContent.call post
+    validParts = _(rawContent.split /-+/).filter (part) -> part
+    post.metaData = jsyaml.load validParts[0]
+    post.metaData.create_at = post.name.match(/^\d{4}-\d{2}-\d{2}/)[0]
+    post.postData = validParts[1]
+
+  Gh3.File.extend
+    getRawContent: ->
+      parsePostData(this) unless @postData
+      @postData
+
+    getMetaData: ->
+      parsePostData(this) unless @metaData
+      @metaData
+) # ]]]
+
+.factory("Gh3.FileList", [ # [[[
+  '$log'
+  'Gh3.File'
+  'Deferred'
+  'DeferredQueue'
+
+($log, File, Deferred, DeferredQueue) ->
+  (files) ->
+    filelist = _(files).map (file) ->
+      unless file instanceof File
+        $log.error file, "must instanceof", File
+      file
+
+    filelist.fetchContents = (start=0, end=5) ->
+      listDeferred = Deferred()
+      range = @slice start, end
+      fetchDeferreds = _(range).map (file) ->
+        deferred = Deferred()
+        file.fetchContent (err, file) ->
+          if err then \
+            deferred.reject err else \
+            deferred.resolve file
+        deferred
+      DeferredQueue(fetchDeferreds)
+        .done (files...) ->
+          listDeferred.resolve files
+        .fail (err) ->
+          listDeferred.reject err
+      listDeferred.promise()
+
+    filelist
+]) # ]]]
+
+.factory("ghrepo", [ # [[[
   "$window"
   "$resource"
   "Deferred"
@@ -30,14 +82,15 @@ angular.module('app.services', ['ngResource'])
       deferred.resolve resp
 
     deferred.promise()
-])
+]) # ]]]
 
-.factory("ghposts", [
+.factory("ghposts", [ # [[[
   'ghrepo'
   'Deferred'
-  'DeferredQueue'
+  'Gh3.File'
+  'Gh3.FileList'
 
-(ghrepo, Deferred, DeferredQueue) ->
+(ghrepo, Deferred, File, FileList) ->
   (username, reponame) ->
     deferred = Deferred()
 
@@ -50,30 +103,18 @@ angular.module('app.services', ['ngResource'])
         callback jqXHR.responseText
       .done (data, textStatus, jqXHR) ->
         callback null, data
-    .then (posts, callback) ->
-      postDeferreds = _(posts)
-        .chain()
-        .filter (post) ->
-          post.type is "file"
+    .then (contents, callback) ->
+      posts = _(contents).chain()
+        .filter (content) ->
+          content.type is "file"
         .map (post) ->
-          new Gh3.File post, new Gh3.User(username), reponame, "master"
-        .map (post) ->
-          postDeferred = Deferred()
-          post.fetchContent (err, post) ->
-            return postDeferred.reject err if err
-            postDeferred.resolve post
-          postDeferred
+          new File post, new Gh3.User(username), reponame, "master"
         .value()
-
-      callback null, postDeferreds
-    .then (postDeferreds) ->
-      DeferredQueue(postDeferreds)
-        .fail((message) -> callback message)
-        .done (posts...) ->
-          deferred.resolve posts
+      deferred.resolve new FileList posts
     .fail (err) ->
       deferred.reject err
 
     postList()
     deferred.promise()
-])
+]) # ]]]
+
