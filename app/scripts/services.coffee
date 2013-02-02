@@ -16,20 +16,30 @@ angular.module('app.services', ['ngResource'])
 
 .factory("Gh3.File", -> # [[[
   parsePostData = (post) ->
-    rawContent = Gh3.File::getRawContent.call post
-    validParts = _(rawContent.split /-+/).filter (part) -> part
-    post.metaData = jsyaml.load validParts[0]
-    post.metaData.create_at = post.name.match(/^\d{4}-\d{2}-\d{2}/)[0]
-    post.postData = validParts[1]
+    rawContent = post.getRawContent()
+    if rawContent
+      validParts = _(rawContent.split /-+/).filter (part) -> part
+      post.metaData = $.extend post.metaData, jsyaml.load validParts[0]
+      post.postData = validParts[1]
+      post.htmlData = marked post.postData
+
+    post.metaData ?= {}
+    create_at_str = post.name.match(/^\d{4}-\d{2}-\d{2}/)[0]
+    post.metaData.create_at_str = create_at_str
+    post.metaData.create_at = moment(create_at_str).toDate().getTime()
 
   Gh3.File.extend
-    getRawContent: ->
-      parsePostData(this) unless @postData
-      @postData
-
     getMetaData: ->
       parsePostData(this) unless @metaData
       @metaData
+
+    getPostContent: ->
+      parsePostData(this) unless @postData
+      @postData
+
+    getHtmlContent: ->
+      parsePostData(this) unless @htmlData
+      @htmlData
 ) # ]]]
 
 .factory("Gh3.FileList", [ # [[[
@@ -61,6 +71,16 @@ angular.module('app.services', ['ngResource'])
         .fail (err) ->
           listDeferred.reject err
       listDeferred.promise()
+
+    filelist.sort (file1, file2) ->
+      f1createAt = file1.getMetaData().create_at
+      f2createAt = file2.getMetaData().create_at
+      if f1createAt > f2createAt
+        -1
+      else if f1createAt is f2createAt
+        0
+      else
+        1
 
     filelist
 ]) # ]]]

@@ -16,3 +16,6 @@
 [submodule "vendor/underscore-waterfall"]
 	path = vendor/underscore-waterfall
 	url = https://github.com/bolasblack/underscore-waterfall.git
+[submodule "vendor/moment"]
+	path = vendor/moment
+	url = https://github.com/timrwood/moment.git

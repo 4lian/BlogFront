@@ -24,6 +24,8 @@ angular.module('app.controllers', [])
       $scope.fullPosts = posts
       $scope.fullPosts.fetchContents()
         .done (posts) -> $scope.$apply (scope) ->
+          scope.prevPage = false
+          scope.nextPage = posts.length is scope.fullPosts.length
           scope.posts = posts
     .fail (err) ->
       $log.log "fetch posts list error:", err

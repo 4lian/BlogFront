@@ -2,9 +2,13 @@
   <h2>{{pageTitle}}</h2>
   <ul data-ng-controller="PostListCtrl">
     <li data-ng-repeat="post in posts">
-      <time>{{post.getMetaData().create_at}}</time>
-      @
-      {{post.getMetaData().title}}
+      <article>
+        <h1>{{post.getMetaData().title}}</h1>
+        @
+        <time>{{post.getMetaData().create_at_str}}</time>
+
+        <div data-ng-bind-html-unsafe="post.getHtmlContent()"></div>
+      </article>
     </li>
   </ul>
 </div>
