@@ -1,14 +1,18 @@
 <div>
   <h2>{{pageTitle}}</h2>
-  <ul data-ng-controller="PostListCtrl">
-    <li data-ng-repeat="post in posts">
-      <article>
-        <h1>{{post.getMetaData().title}}</h1>
-        @
-        <time>{{post.getMetaData().create_at_str}}</time>
+  <div data-ng-controller="PostListCtrl">
+    <ul>
+      <li data-ng-repeat="post in posts">
+        <article>
+          <h1>{{post.getMetaData().title}}</h1>
+          @
+          <time>{{post.getMetaData().create_at_str}}</time>
 
-        <div data-ng-bind-html-unsafe="post.getHtmlContent()"></div>
-      </article>
-    </li>
-  </ul>
+          <div data-ng-bind-html-unsafe="post.getHtmlContent()"></div>
+        </article>
+      </li>
+    </ul>
+
+    <div data-pagination data-num-pages="fullPosts.length / pageSize" data-current-page="currentPage" data-max-size="5" data-next-text="下一页" data-previous-text="上一页"></div>
+  </div>
 </div>

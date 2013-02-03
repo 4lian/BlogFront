@@ -1,0 +1,1 @@
+../ui-bootstrap/ui-bootstrap-tpls-0.1.0-SNAPSHOT.js

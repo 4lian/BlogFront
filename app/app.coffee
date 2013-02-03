@@ -4,6 +4,8 @@
 App = angular.module('app', [
   'ngCookies'
   'ngResource'
+  'ui.bootstrap'
+
   'app.controllers'
   'app.directives'
   'app.filters'

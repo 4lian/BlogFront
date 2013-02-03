@@ -19,3 +19,6 @@
 [submodule "vendor/moment"]
 	path = vendor/moment
 	url = https://github.com/timrwood/moment.git
+[submodule "vendor/ui-bootstrap"]
+	path = vendor/ui-bootstrap
+	url = https://github.com/angular-ui/bootstrap.git
