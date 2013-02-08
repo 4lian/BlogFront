@@ -4,16 +4,32 @@
 
 angular.module('app.controllers', [])
 
-.controller('PostListCtrl', [
+.controller('NavCtrl', [ # [[[
   '$rootScope'
+  '$scope'
+  '$location'
+
+($rootScope, $scope, $location) ->
+  $scope.$location = $location
+
+  $scope.navTitleConfig =
+    '/': "文章列表"
+
+  $scope.$watch '$location.path()', (path) ->
+    $rootScope.pageTitle = $scope.navTitleConfig[path]
+
+  $scope.getNavClass = (path) ->
+    if $location.path() is path then 'active' else ''
+]) # ]]]
+
+.controller('PostListCtrl', [ # [[[
   '$scope'
   '$log'
   'ghposts'
   'Deferred'
   'DeferredQueue'
 
-  ($rootScope, $scope, $log, ghposts, Deferred, DeferredQueue) ->
-    $rootScope.pageTitle = "文章列表"
+  ($scope, $log, ghposts, Deferred, DeferredQueue) ->
     $scope.pageSize = 1
     $scope.posts = []
     $scope.fullPosts = []
@@ -34,4 +50,5 @@ angular.module('app.controllers', [])
       ).done (posts) ->
         $scope.posts = posts
         $scope.$digest() unless $scope.$$phase
-])
+]) # ]]]
+

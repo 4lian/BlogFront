@@ -1,18 +1,29 @@
-<div>
-  <h2>{{pageTitle}}</h2>
-  <div data-ng-controller="PostListCtrl">
-    <ul>
-      <li data-ng-repeat="post in posts">
-        <article>
-          <h1>{{post.getMetaData().title}}</h1>
-          @
-          <time>{{post.getMetaData().create_at_str}}</time>
+<style type="text/css">
+.article-list {
+  margin-left: 0;
+  list-style: none; }
+article {
+  padding-top: 20px; }
+article h1 {
+  display: inline-block;
+  margin: 0;
+  vertical-align: text-bottom; }
+article .content {
+  margin-top: 15px; }
+</style>
 
-          <div data-ng-bind-html-unsafe="post.getHtmlContent()"></div>
-        </article>
-      </li>
-    </ul>
+<div data-ng-controller="PostListCtrl">
+  <ul class="article-list">
+    <li data-ng-repeat="post in posts">
+      <article>
+        <h1>{{post.getMetaData().title}}</h1>
+        @
+        <time>{{post.getMetaData().create_at_str}}</time>
 
-    <div data-pagination data-num-pages="fullPosts.length / pageSize" data-current-page="currentPage" data-max-size="5" data-next-text="下一页" data-previous-text="上一页"></div>
-  </div>
+        <div class="content" data-ng-bind-html-unsafe="post.getHtmlContent()"></div>
+      </article>
+    </li>
+  </ul>
+
+  <div data-pagination data-num-pages="fullPosts.length / pageSize" data-current-page="currentPage" data-max-size="5" data-next-text="下一页" data-previous-text="上一页"></div>
 </div>

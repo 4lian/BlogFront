@@ -60,10 +60,13 @@ angular.module('app.services', ['ngResource'])
       range = @slice start, end
       fetchDeferreds = _(range).map (file) ->
         deferred = Deferred()
-        file.fetchContent (err, file) ->
-          if err then \
-            deferred.reject err else \
-            deferred.resolve file
+        if file.getRawContent()
+          deferred.resolve file
+        else
+          file.fetchContent (err, file) ->
+            if err then \
+              deferred.reject err else \
+              deferred.resolve file
         deferred
       DeferredQueue(fetchDeferreds)
         .done (files...) ->
