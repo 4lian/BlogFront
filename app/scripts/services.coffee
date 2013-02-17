@@ -18,7 +18,9 @@ angular.module('app.services', ['ngResource'])
   parsePostData = (post) ->
     rawContent = post.getRawContent()
     if rawContent
-      validParts = _(rawContent.split /-+/).filter (part) -> part
+      validParts = _(rawContent.split /(^|\s)-+(\s|$)/).filter (part) ->
+        part.replace(/\s/g, "")
+
       post.metaData = $.extend post.metaData, jsyaml.load validParts[0]
       post.postData = validParts[1]
       post.htmlData = marked post.postData
@@ -140,7 +142,7 @@ angular.module('app.services', ['ngResource'])
     postList = _.waterfall (callback) ->
       $.ajax
         url: "https://api.github.com/repos/#{username}\
-          /#{reponame}/contents/_posts"
+          /#{reponame}/contents"
         headers: "Origin": location.host
       .fail (jqXHR, textStatus, errorThrown) ->
         callback jqXHR.responseText
@@ -149,7 +151,7 @@ angular.module('app.services', ['ngResource'])
     .then (contents, callback) ->
       posts = _(contents).chain()
         .filter (content) ->
-          content.type is "file"
+          content.type is "file" and content.name.charAt(0) isnt "."
         .map (post) ->
           new File post, new Gh3.User(username), reponame, "master"
         .value()

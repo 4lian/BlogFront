@@ -19,30 +19,34 @@ angular.module('app.controllers', [])
     $rootScope.pageTitle = $scope.navTitleConfig[path]
 
   $scope.getNavClass = (path) ->
-    if $location.path() is path then 'active' else ''
+    if $location.path().indexOf(path) is 0 then 'active' else ''
 ]) # ]]]
 
 .controller('PostListCtrl', [ # [[[
   '$scope'
   '$log'
+  '$routeParams'
+  '$window'
   'ghposts'
   'Deferred'
   'DeferredQueue'
 
-  ($scope, $log, ghposts, Deferred, DeferredQueue) ->
+  ($scope, $log, $routeParams, $window, ghposts, Deferred, DeferredQueue) ->
     $scope.pageSize = 1
     $scope.posts = []
     $scope.fullPosts = []
 
-    ghposts("bolasblack", "bolasblack.github.com")
+    ghposts("bolasblack", "BlogPosts")
       .fail (err) ->
         $log.log "fetch posts list error:", err
       .done (posts) ->
         $scope.fullPosts = posts
-        $scope.currentPage = 1
+        $scope.currentPage = parseInt $routeParams.page or 1, 10
         $scope.$digest() unless $scope.$$phase
 
     $scope.$watch "fullPosts + currentPage", ->
+      if $scope.currentPage
+        $window.location.hash = "!/page/#{$scope.currentPage}"
       realPage = $scope.currentPage - 1
       $scope.fullPosts.fetchContents?(
         realPage

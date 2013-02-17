@@ -21,6 +21,7 @@ App.config([
   $routeProvider
 
     .when('/', {templateUrl: '/partials/posts_list.html'})
+    .when('/page/:page', {templateUrl: '/partials/posts_list.html'})
     # Catch all
     .otherwise({redirectTo: '/'})
 
