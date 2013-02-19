@@ -1,4 +1,12 @@
 <style type="text/css">
+body.avgrund-ready {
+  overflow: hidden; }
+
+.avgrund-popin {
+  top: 15%; }
+.modal-body {
+  overflow: visible; }
+
 .table tr:first-child td {
   border-top: 0; }
 .table tr:hover {
@@ -16,7 +24,7 @@
 
 <div class="article-list" data-ng-controller="PostListCtrl">
   <table class="table">
-    <tr data-ng-repeat="post in posts" data-ng-click="showPost(post)">
+    <tr data-ng-repeat="post in posts" data-avgrund="avgrundOpts">
       <td>{{post.getMetaData().title}}</td>
       <td class="create-time">@<time>{{post.getMetaData().create_at_str}}</time></td>
     </tr>

@@ -29,6 +29,8 @@ exports.config =
           'vendor/scripts/angular/angular-resource.js'
           'vendor/scripts/angular/angular-cookies.js'
 
+          'vendor/scripts/jquery.avgrund.js'
+
           'vendor/scripts/bootstrap/bootstrap-transition.js'
           'vendor/scripts/bootstrap/bootstrap-alert.js'
           'vendor/scripts/bootstrap/bootstrap-button.js'

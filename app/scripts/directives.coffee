@@ -3,16 +3,21 @@
 ### Directives ###
 
 # register the module with Angular
-angular.module('app.directives', [
-  # require the 'app.service' module
-  'app.services'
-])
+angular.module('app.directives', [])
 
-.directive('appVersion', [
-  'version'
+.directive('avgrund', [ ->
+  ($scope, elem, attrs) ->
+    options = $scope.$eval attrs.avgrund
 
-(version) ->
+    {template, onload, onUnload} = options
+    options.template = -> template $scope
 
-  (scope, elm, attrs) ->
-    elm.text(version)
+    options.onload = ->
+      onload?.apply this, arguments
+
+    options.onUnload = ->
+      $(".avgrund-popin").remove()
+      onUnload?.apply this, arguments
+
+    $(elem).avgrund options
 ])

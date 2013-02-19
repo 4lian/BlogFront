@@ -22,3 +22,6 @@
 [submodule "vendor/ui-bootstrap"]
 	path = vendor/ui-bootstrap
 	url = https://github.com/angular-ui/bootstrap.git
+[submodule "vendor/jquery.avgrund"]
+	path = vendor/jquery.avgrund
+	url = https://github.com/voronianski/jquery.avgrund.js.git

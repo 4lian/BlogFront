@@ -47,7 +47,18 @@ angular.module('app.controllers', [])
         $scope.currentPage = parseInt $routeParams.page or 1, 10
         $scope.$digest() unless $scope.$$phase
 
-    $scope.showPost = (post) ->
+    $scope.avgrundOpts =
+      width: 640
+      height: "auto"
+      template: ($scope) ->
+        """
+        <article>
+          <div class="modal-header">#{$scope.post.getMetaData().title}</div>
+          <div class="modal-body">
+            #{$scope.post.getHtmlContent()}
+          </div>
+        </article>
+        """
 
     $scope.$watch "fullPosts + currentPage", ->
       if $scope.currentPage
