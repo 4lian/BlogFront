@@ -1,29 +1,26 @@
 <style type="text/css">
+.table tr:first-child td {
+  border-top: 0; }
+.table tr:hover {
+  cursor: pointer;
+  background: #f9f9f9; }
+
 .article-list {
-  margin-left: 0;
-  list-style: none; }
-article {
-  padding-top: 20px; }
-article h1 {
-  display: inline-block;
-  margin: 0;
-  vertical-align: text-bottom; }
-article .content {
-  margin-top: 15px; }
+  margin-top: 30px; }
+.article-list time {
+  margin-left: 10px; }
+.article-list .create-time {
+  padding-left: 20px;
+  text-align: right; }
 </style>
 
-<div data-ng-controller="PostListCtrl">
-  <ul class="article-list">
-    <li data-ng-repeat="post in posts">
-      <article>
-        <h1>{{post.getMetaData().title}}</h1>
-        @
-        <time>{{post.getMetaData().create_at_str}}</time>
+<div class="article-list" data-ng-controller="PostListCtrl">
+  <table class="table">
+    <tr data-ng-repeat="post in posts" data-ng-click="showPost(post)">
+      <td>{{post.getMetaData().title}}</td>
+      <td class="create-time">@<time>{{post.getMetaData().create_at_str}}</time></td>
+    </tr>
+  </table>
 
-        <div class="content" data-ng-bind-html-unsafe="post.getHtmlContent()"></div>
-      </article>
-    </li>
-  </ul>
-
-  <div data-pagination data-num-pages="fullPosts.length / pageSize" data-current-page="currentPage" data-max-size="5" data-next-text="下一页" data-previous-text="上一页"></div>
+  <div class="pagination-centered" data-pagination data-num-pages="pageCount()" data-current-page="currentPage" data-max-size="5" data-next-text="下一页" data-previous-text="上一页"></div>
 </div>

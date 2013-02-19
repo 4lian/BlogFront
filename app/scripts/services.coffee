@@ -52,7 +52,7 @@ angular.module('app.services', ['ngResource'])
           callback? null, post
 
     getMetaData: ->
-      parsePostData(this) unless @metaData
+      parsePostData(this)
       @metaData
 
     getPostContent: ->
