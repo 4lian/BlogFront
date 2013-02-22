@@ -6,14 +6,15 @@
 angular.module('app.directives', [])
 
 .directive('avgrund', [ ->
-  ($scope, elem, attrs) ->
-    options = $scope.$eval attrs.avgrund
+  link: ($scope, elem, attrs) ->
+    options = angular.copy $scope.$eval attrs.avgrund
 
     {template, onload, onUnload} = options
-    options.template = -> template $scope
+    options.template = ->
+      template $scope
 
-    options.onload = ->
-      onload?.apply this, arguments
+    options.onLoad = ->
+      onLoad?.apply this, arguments
 
     options.onUnload = ->
       $(".avgrund-popin").remove()
