@@ -64,11 +64,6 @@ angular.module('app.controllers', [])
       if $scope.currentPage
         $window.location.hash = "!/page/#{$scope.currentPage}"
       realPage = $scope.currentPage - 1
-      $scope.fullPosts.fetchContents?(
-        realPage
-        realPage + $scope.pageSize
-      ).done (posts) ->
-        $scope.posts = posts
-        $scope.$digest() unless $scope.$$phase
+      $scope.posts = $scope.fullPosts.slice realPage, realPage + $scope.pageSize
 ]) # ]]]
 

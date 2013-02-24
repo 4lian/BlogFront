@@ -18,17 +18,26 @@ angular.module('app.services', ['ngResource'])
   parsePostData = (post) ->
     rawContent = post.getRawContent()
     if rawContent
-      validParts = _(rawContent.split /(^|\s)-+(\s|$)/).filter (part) ->
-        part.replace(/\s/g, "")
+      contentParts = rawContent.split /(^|\s)-+(\s|$)/
 
-      post.metaData = $.extend post.metaData, jsyaml.load validParts[0]
-      post.postData = validParts[1]
+      validParts = _(contentParts).select (part) -> part.replace(/\s/g, "")
+      if contentParts[0].replace(/-/g, "") is ""
+        post.metaData = $.extend post.metaData, jsyaml.load validParts[0]
+        post.postData = validParts[1]
+      else
+        post.postData = validParts[0]
       post.htmlData = marked post.postData
 
+    name = post.name.replace /\.(md|markdown)$/, ""
+    createTimeRE = /^\d{4}-\d{1,2}-\d{1,2}-/
+    createTimeStr = name.match(createTimeRE)[0].slice(0, -1)
+
     post.metaData ?= {}
-    create_at_str = post.name.match(/^\d{4}-\d{2}-\d{2}/)[0]
-    post.metaData.create_at_str = create_at_str
-    post.metaData.create_at = moment(create_at_str).toDate().getTime()
+    post.metaData.create_at_str = createTimeStr
+    post.metaData.create_at = moment(createTimeStr).toDate().getTime()
+    post.metaData.title = name
+      .replace(createTimeRE, "")
+      .replace(/([^\\])_/g,"$1 ")
 
   Gh3.File.extend
     fetchContent: (callback) ->
