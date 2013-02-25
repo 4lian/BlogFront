@@ -40,26 +40,6 @@ angular.module('app.services', ['ngResource'])
       .replace(/([^\\])_/g,"$1 ")
 
   Gh3.File.extend
-    fetchContent: (callback) ->
-      ls = window.localStorage
-      try firstfetch = parseInt ls.getItem("firstfetch"), 10
-      outtime = 1000 * 60 * 60 * 24 * 15
-      timeout = not firstfetch or ($.now() - firstfetch) >= outtime
-      ls.removeItem("posts") if timeout
-      try postsData = JSON.parse ls.getItem "posts"
-      postsData or= {}
-
-      if rawContent = postsData[@path]
-        @rawContent = rawContent
-        callback? null, this
-      else
-        Gh3.File::fetchContent.call this, (err, post) ->
-          return callback?(err) if err
-          postsData[post.path] = post.getRawContent()
-          ls.setItem "posts", JSON.stringify postsData
-          ls.setItem "firstfetch", $.now() if timeout
-          callback? null, post
-
     getMetaData: ->
       parsePostData(this)
       @metaData

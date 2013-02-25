@@ -50,15 +50,18 @@ angular.module('app.controllers', [])
     $scope.avgrundOpts =
       width: 640
       height: "auto"
-      template: ($scope) ->
-        """
-        <article>
-          <div class="modal-header">#{$scope.post.getMetaData().title}</div>
-          <div class="modal-body">
-            #{$scope.post.getHtmlContent()}
-          </div>
-        </article>
-        """
+      render: ($scope, callback) ->
+        $scope.post.fetchContent (err, post) ->
+          return false if err
+          callback("""
+            <article>
+              <div class="modal-header">#{post.getMetaData().title}</div>
+              <div class="modal-body">
+                #{post.getHtmlContent()}
+              </div>
+            </article>
+            """
+          )
 
     $scope.$watch "fullPosts + currentPage", ->
       if $scope.currentPage

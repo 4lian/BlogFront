@@ -9,16 +9,9 @@ angular.module('app.directives', [])
   link: ($scope, elem, attrs) ->
     options = angular.copy $scope.$eval attrs.avgrund
 
-    {template, onload, onUnload} = options
-    options.template = ->
-      template $scope
-
     options.onLoad = ->
-      onLoad?.apply this, arguments
-
-    options.onUnload = ->
-      $(".avgrund-popin").remove()
-      onUnload?.apply this, arguments
+      options.render $scope, (html) ->
+        $(".avgrund-overlay").append $(".avgrund-popin").detach().html html
 
     $(elem).avgrund options
 ])
