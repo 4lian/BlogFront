@@ -53,13 +53,20 @@ angular.module('app.controllers', [])
       render: ($scope, callback) ->
         $scope.post.fetchContent (err, post) ->
           return false if err
+          codeId = $.now()
           callback("""
-            <article>
+            <article id="article#{codeId}">
               <div class="modal-header">#{post.getMetaData().title}</div>
               <div class="modal-body">
                 #{post.getHtmlContent()}
               </div>
             </article>
+            <script>
+              (function() {
+                var elem = document.getElementById("article#{codeId}");
+                hljs.highlightBlock(elem);
+              })();
+            </script>
             """
           )
 

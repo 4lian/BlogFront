@@ -11,7 +11,9 @@ angular.module('app.directives', [])
 
     options.onLoad = ->
       options.render $scope, (html) ->
-        $(".avgrund-overlay").append $(".avgrund-popin").detach().html html
+        $elem = $(".avgrund-popin").detach()
+        $(".avgrund-overlay").append $elem
+        $elem.html html
 
     $(elem).avgrund options
 ])

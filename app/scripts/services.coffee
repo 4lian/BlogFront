@@ -18,7 +18,7 @@ angular.module('app.services', ['ngResource'])
   parsePostData = (post) ->
     rawContent = post.getRawContent()
     if rawContent
-      contentParts = rawContent.split /(^|\s)-+(\s|$)/
+      contentParts = rawContent.split /^-+$/
 
       validParts = _(contentParts).select (part) -> part.replace(/\s/g, "")
       if contentParts[0].replace(/-/g, "") is ""
