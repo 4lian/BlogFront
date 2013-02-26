@@ -32,19 +32,13 @@ angular.module('app.controllers', [])
   'DeferredQueue'
 
   ($scope, $log, $routeParams, $window, ghposts, Deferred, DeferredQueue) ->
-    $scope.pageSize = 5
     $scope.posts = []
-    $scope.fullPosts = []
-
-    $scope.pageCount = ->
-      Math.ceil $scope.fullPosts.length / $scope.pageSize
 
     ghposts("bolasblack", "BlogPosts")
       .fail (err) ->
         $log.log "fetch posts list error:", err
       .done (posts) ->
-        $scope.fullPosts = posts
-        $scope.currentPage = parseInt $routeParams.page or 1, 10
+        $scope.posts = posts
         $scope.$digest() unless $scope.$$phase
 
     $scope.avgrundOpts =
@@ -69,11 +63,5 @@ angular.module('app.controllers', [])
             </script>
             """
           )
-
-    $scope.$watch "fullPosts + currentPage", ->
-      if $scope.currentPage
-        $window.location.hash = "!/page/#{$scope.currentPage}"
-      realPage = $scope.currentPage - 1
-      $scope.posts = $scope.fullPosts.slice realPage, realPage + $scope.pageSize
 ]) # ]]]
 
