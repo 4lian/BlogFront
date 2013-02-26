@@ -10,10 +10,13 @@ angular.module('app.directives', [])
     options = angular.copy $scope.$eval attrs.avgrund
 
     options.onLoad = ->
-      options.render $scope, (html) ->
+      options.render? $scope, (html) ->
         $elem = $(".avgrund-popin").detach()
         $(".avgrund-overlay").append $elem
         $elem.html html
+
+    options.onUnload = ->
+      options.clean? $scope
 
     $(elem).avgrund options
 ])

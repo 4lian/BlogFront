@@ -44,22 +44,39 @@ angular.module('app.controllers', [])
     $scope.avgrundOpts =
       width: 640
       height: "auto"
+      clean: ($scope) ->
+        $window.DISQUS = null
       render: ($scope, callback) ->
         $scope.post.fetchContent (err, post) ->
           return false if err
-          codeId = $.now()
+          metaData = post.getMetaData()
+          debugger
           callback("""
-            <article id="article#{codeId}">
-              <div class="modal-header">#{post.getMetaData().title}</div>
-              <div class="modal-body">
+            <div class="modal-header">#{metaData.title}</div>
+            <div class="modal-body" style="max-height:none;">
+              <article id="article#{metaData.identifier}">
                 #{post.getHtmlContent()}
-              </div>
-            </article>
+                <div id="disqus_thread"></div>
+              </article>
+            </div>
             <script>
-              (function() {
-                var elem = document.getElementById("article#{codeId}");
+              var disqus_shortname = 'plaferinfo',
+                  disqus_identifier = '#{metaData.identifier}',
+                  disqus_title = '#{metaData.title}',
+                  disqus_url = '#{window.location.href}#{metaData.identifier}'
+
+              ;(function() {
+                var d = window.document,
+                    t = function(tn) { return d.getElementsByTagName(tn)[0] },
+                    elem = d.getElementById("article#{metaData.identifier}"),
+                    dsq = d.createElement('script')
+
                 hljs.highlightBlock(elem);
-              })();
+                dsq.type = 'text/javascript'
+                dsq.async = true
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js'
+                ;(t('head') || t('body')).appendChild(dsq)
+              })()
             </script>
             """
           )

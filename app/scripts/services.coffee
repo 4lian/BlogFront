@@ -18,11 +18,12 @@ angular.module('app.services', ['ngResource'])
   parsePostData = (post) ->
     rawContent = post.getRawContent()
     if rawContent
-      contentParts = rawContent.split /^-+$/
-
+      contentParts = rawContent.split /^-+$/m
       validParts = _(contentParts).select (part) -> part.replace(/\s/g, "")
       if contentParts[0].replace(/-/g, "") is ""
-        post.metaData = $.extend post.metaData, jsyaml.load validParts[0]
+        metaData = $.extend post.metaData, jsyaml.load validParts[0]
+        delete metaData.title
+        post.metaData = metaData
         post.postData = validParts[1]
       else
         post.postData = validParts[0]
@@ -33,13 +34,26 @@ angular.module('app.services', ['ngResource'])
     createTimeStr = name.match(createTimeRE)[0].slice(0, -1)
 
     post.metaData ?= {}
+    post.metaData.identifier = createTimeStr
     post.metaData.create_at_str = createTimeStr
     post.metaData.create_at = moment(createTimeStr).toDate().getTime()
     post.metaData.title = name
       .replace(createTimeRE, "")
       .replace(/([^\\])_/g,"$1 ")
 
+  fetchContent = Gh3.File::fetchContent
   Gh3.File.extend
+    #fetchContent: (callback) ->
+      #postsCache = JSON.parse localStorage.getItem("posts") or "{}"
+      #if postsCache[@path]?.sha is @sha
+        #_.extend this, postsCache
+        #return callback? null, this
+      #fetchContent.call this, (err, file) ->
+        #unless err or file.type isnt "file"
+          #postsCache[file.path] = file
+          #localStorage.setItem "posts", JSON.stringify postsCache
+        #callback? err, file
+
     getMetaData: ->
       parsePostData(this)
       @metaData
