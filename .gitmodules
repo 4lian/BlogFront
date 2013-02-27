@@ -25,3 +25,6 @@
 [submodule "vendor/jquery.avgrund"]
 	path = vendor/jquery.avgrund
 	url = https://github.com/voronianski/jquery.avgrund.js.git
+[submodule "public"]
+	path = public
+	url = https://github.com/bolasblack/blog.git

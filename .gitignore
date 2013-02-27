@@ -8,7 +8,6 @@ build.xml
 .idea/*
 *.swp
 
-public
 node_modules/*
 npm-debug.log
 
