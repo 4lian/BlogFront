@@ -1,30 +1,30 @@
 [submodule "vendor/frontLib"]
 	path = vendor/frontLib
-	url = https://github.com/sorcerers/frontLib.git
+	url = git://github.com/sorcerers/frontLib.git
 [submodule "vendor/gh3"]
 	path = vendor/gh3
-	url = https://github.com/bolasblack/gh3.git
+	url = git://github.com/bolasblack/gh3.git
 [submodule "vendor/js-yaml"]
 	path = vendor/js-yaml
-	url = https://github.com/nodeca/js-yaml.git
+	url = git://github.com/nodeca/js-yaml.git
 [submodule "vendor/marked"]
 	path = vendor/marked
-	url = https://github.com/chjj/marked.git
+	url = git://github.com/chjj/marked.git
 [submodule "vendor/underscore"]
 	path = vendor/underscore
-	url = https://github.com/documentcloud/underscore.git
+	url = git://github.com/documentcloud/underscore.git
 [submodule "vendor/underscore-waterfall"]
 	path = vendor/underscore-waterfall
-	url = https://github.com/bolasblack/underscore-waterfall.git
+	url = git://github.com/bolasblack/underscore-waterfall.git
 [submodule "vendor/moment"]
 	path = vendor/moment
-	url = https://github.com/timrwood/moment.git
+	url = git://github.com/timrwood/moment.git
 [submodule "vendor/ui-bootstrap"]
 	path = vendor/ui-bootstrap
-	url = https://github.com/angular-ui/bootstrap.git
+	url = git://github.com/angular-ui/bootstrap.git
 [submodule "vendor/jquery.avgrund"]
 	path = vendor/jquery.avgrund
-	url = https://github.com/voronianski/jquery.avgrund.js.git
+	url = git://github.com/voronianski/jquery.avgrund.js.git
 [submodule "public"]
 	path = public
-	url = https://github.com/bolasblack/bolasblack.github.com.git
+	url = git://github.com/bolasblack/bolasblack.github.com.git
