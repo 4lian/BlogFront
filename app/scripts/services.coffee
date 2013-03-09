@@ -144,8 +144,7 @@ angular.module('app.services', ['ngResource'])
 
     postList = _.waterfall (callback) ->
       $.ajax
-        url: "https://api.github.com/repos/#{username}\
-          /#{reponame}/contents"
+        url: "https://api.github.com/repos/#{username}/#{reponame}/contents"
         headers: "Origin": location.host
       .fail (jqXHR, textStatus, errorThrown) ->
         callback jqXHR.responseText
