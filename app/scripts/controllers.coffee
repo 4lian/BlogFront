@@ -50,7 +50,6 @@ angular.module('app.controllers', [])
         $scope.post.fetchContent (err, post) ->
           return false if err
           metaData = post.getMetaData()
-          debugger
           callback("""
             <div class="modal-header">#{metaData.title}</div>
             <div class="modal-body" style="max-height:none;">
@@ -60,10 +59,15 @@ angular.module('app.controllers', [])
               </article>
             </div>
             <script>
-              var disqus_shortname = 'plaferinfo',
-                  disqus_identifier = '#{metaData.identifier}',
-                  disqus_title = '#{metaData.title}',
-                  disqus_url = '#{window.location.href}#{metaData.identifier}'
+              delete window.disqus_url
+              delete window.disqus_title
+              delete window.disqus_shortname
+              delete window.disqus_identifier
+
+              window.disqus_shortname = 'plaferinfo',
+              window.disqus_identifier = '#{metaData.identifier}',
+              window.disqus_title = '#{metaData.title}',
+              window.disqus_url = '#{location.href}#{metaData.identifier}'
 
               ;(function() {
                 var d = window.document,

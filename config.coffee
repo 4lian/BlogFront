@@ -6,6 +6,16 @@ exports.config =
     definition: false
     wrapper: false
 
+  coffeelint:
+    pattern: /^app\/.*\.coffee$/
+    # options doc : http: //www.coffeelint.org/#options
+    options:
+      max_line_length: level: "ignore"
+      no_backticks: level: "ignore"
+      indentation:
+        value: 2
+        level: "ignore"
+
   paths:
     public: 'public'
 
